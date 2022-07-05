@@ -1,0 +1,37 @@
+{
+    "name": "用友V6.5 BshServlet_CNVD-2021-30167前台命令执行漏洞检测",
+    "tags": [
+        "用友V6.5"
+    ],
+    "help": "用友V6.5 BshServlet_CNVD-2021-30167前台命令执行漏洞检测",
+    "author": "Fariy",
+    "module_file": "handle.yak",
+    "params": [
+        {
+            "name": "target",
+            "verbose": "扫描的目标",
+            "description": "",
+            "type": "string",
+            "default_value": "",
+            "required": true,
+            "group": "",
+            "extra_setting": ""
+        },
+        {
+            "name": "ports",
+            "verbose": "端口",
+            "description": "",
+            "type": "string",
+            "default_value": "80",
+            "required": false,
+            "group": "",
+            "extra_setting": ""
+        }
+    ],
+    "document": "document.md",
+    "general_module_verbose": "",
+    "general_module_key": "",
+    "is_general_module": false,
+    "enable_plugin_selector": false,
+    "plugin_selector_types": ""
+}

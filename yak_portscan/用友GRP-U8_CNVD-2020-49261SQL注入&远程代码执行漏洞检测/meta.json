@@ -1,0 +1,40 @@
+{
+    "name": "用友GRP-U8_CNVD-2020-49261SQL注入\u0026远程代码执行漏洞检测",
+    "tags": [
+        "用友",
+        "GRP",
+        "RCE",
+        "CNVD-2020-49261"
+    ],
+    "help": "用友GRP-U8_CNVD-2020-49261SQL注入\u0026远程代码执行漏洞检测",
+    "author": "Fariy",
+    "module_file": "handle.yak",
+    "params": [
+        {
+            "name": "target",
+            "verbose": "扫描的目标",
+            "description": "",
+            "type": "string",
+            "default_value": "",
+            "required": true,
+            "group": "",
+            "extra_setting": ""
+        },
+        {
+            "name": "ports",
+            "verbose": "端口",
+            "description": "",
+            "type": "string",
+            "default_value": "80",
+            "required": false,
+            "group": "",
+            "extra_setting": ""
+        }
+    ],
+    "document": "document.md",
+    "general_module_verbose": "",
+    "general_module_key": "",
+    "is_general_module": false,
+    "enable_plugin_selector": false,
+    "plugin_selector_types": ""
+}
